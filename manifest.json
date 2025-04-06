@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "BeatHub - Auto Player",
+  "version": "1.0",
+  "description": "Auto-plays Splice samples",
+  "permissions": ["scripting", "storage", "tabs"],
+  "host_permissions": ["https://splice.com/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://splice.com/sounds*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
