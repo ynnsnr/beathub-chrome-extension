@@ -1,0 +1,70 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.bg-gradient {
+  /* moonlit asteroid */
+  background: #0F2027; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to bottom, #2C5364, #203A43, #0F2027); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to bottom, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.title {
+  align-items: end;
+  color: #d1d5db;
+  display: flex;
+  gap: 4px;
+  padding: 8px;
+}
+
+.title svg {
+  color: #ffffff;
+}
+
+.buttons {
+  margin: 0 50px;
+  padding: 20px 0 20px 0;
+}
+
+button {
+  background-color: #40494d;
+  border-radius: 100%;
+  border: 2px solid #40494d;
+  color: #76d1fe;
+  cursor: pointer;
+  display: block;
+  height: 80px;
+  padding-left: 2px;
+  padding-top: 4px;
+  position: relative;
+  transition: 0.2s all ease-out;
+  width: 80px;
+}
+
+button:hover {
+  background-color: rgba(205, 205, 205, 0.5);
+}
+
+button:active, button:focus {
+  transform: scale(0.95, 0.95);
+}
+
+.credits {
+  color: #9ca3af;
+  padding: 8px;
+  text-align: right;
+}
+
+.credits a {
+  color: #d1d5db;
+  text-decoration: none;
+  transition: 0.2s all ease-out;
+}
+
+.credits a:hover {
+  color:#ffffff;
+  text-decoration: underline;
+  transition: 0.2s all ease-out;
+}
