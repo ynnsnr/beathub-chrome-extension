@@ -1,3 +1,5 @@
+console.log('[BeatHub] content script loaded');
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'stopAutoPlay') {
     stopAutoPlay();
@@ -8,6 +10,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     runAutoPlay();
     sendResponse({ status: 'started' });
   }
+
+  return true;
 });
 
 window.addEventListener('load', () =>
@@ -16,7 +20,7 @@ window.addEventListener('load', () =>
 
 if (typeof window.userStopped === 'undefined') window.userStopped = false;
 
-const shouldStop = (initialUrl) => {
+function shouldStop(initialUrl) {
   const newUrl = new URL(location.href);
   if (newUrl.pathname !== initialUrl.pathname) return true;
 
@@ -27,9 +31,9 @@ const shouldStop = (initialUrl) => {
   };
 
   return filtered(newUrl) !== filtered(initialUrl);
-};
+}
 
-const onUrlChange = async (event) => {
+async function onUrlChange(event) {
   if (window.userStopped) return;
 
   const initialUrl = new URL(location.href);
@@ -41,11 +45,11 @@ const onUrlChange = async (event) => {
     chrome?.storage?.local?.set?.({ autoplayActive: false });
     console.log('🛑 [BeatHub] AutoPlay stopped');
   }
-};
+}
 
 navigation.addEventListener('navigate', onUrlChange);
 
-const stopAutoPlay = () => {
+async function stopAutoPlay() {
   window.userStopped = true;
   chrome?.storage?.local?.set?.({ autoplayActive: false });
   // console.log('🟥 STOP button clicked from popup');
@@ -68,13 +72,13 @@ const stopAutoPlay = () => {
       }
     }
   }
-};
+}
 
-const runAutoPlay = async () => {
+async function runAutoPlay() {
   console.log('▶️ [BeatHub] AutoPlay Started');
-
-  let hasNextPage = true;
   window.userStopped = false; // reset on each run
+  let hasNextPage = true;
+  let skipUntilFound = false;
 
   const stopButtons = document.querySelectorAll('button[aria-label="play"]');
   const stopIcon = document.querySelector('#icon-stop-solid');
@@ -84,7 +88,6 @@ const runAutoPlay = async () => {
     if (stopButton) stopButton.addEventListener('click', handleStop);
 
   const currentPlayingName = getCurrentPlayingName();
-  let skipUntilFound = false;
 
   while (hasNextPage && !window.userStopped) {
     let rows = document.querySelectorAll('.asset-list-row');
@@ -96,10 +99,8 @@ const runAutoPlay = async () => {
     for (let i = 0; i < rows.length; i++) {
       if (window.userStopped) break;
 
-      const row = rows[i];
-
       if (skipUntilFound) {
-        const filename = row.querySelector('.filename')?.textContent.trim();
+        const filename = rows[i].querySelector('.filename')?.textContent.trim();
         if (filename === currentPlayingName) {
           skipUntilFound = false;
           continue;
@@ -108,8 +109,8 @@ const runAutoPlay = async () => {
         }
       }
 
-      let play = row.querySelector('.type-cell');
-      if (!play) play = row.querySelector('.cell--playback'); // logged out case
+      let play = rows[i].querySelector('.type-cell');
+      if (!play) play = rows[i].querySelector('.cell--playback'); // logged out case
       if (!play) continue;
 
       const icon = play.querySelector('use');
@@ -140,13 +141,13 @@ const runAutoPlay = async () => {
 
   if (stopIcon) stopIcon.removeEventListener('click', handleStop);
   for (const stopButton of stopButtons)
-    if (stopButton) stopButton.addEventListener('click', handleStop);
+    if (stopButton) stopButton.removeEventListener('click', handleStop);
 
   chrome?.storage?.local?.set?.({ autoplayActive: false });
   console.log('🛑 [BeatHub] AutoPlay stopped');
-};
+}
 
-const waitForIconChange = async (container, targetHref, timeout = 10000) => {
+async function waitForIconChange(container, targetHref, timeout) {
   const start = Date.now();
 
   while (true) {
@@ -157,24 +158,24 @@ const waitForIconChange = async (container, targetHref, timeout = 10000) => {
     if (Date.now() - start > timeout) return false;
     await new Promise((res) => setTimeout(res, 250));
   }
-};
+}
 
-const handleStop = () => {
+function handleStop() {
   window.userStopped = true;
   chrome?.storage?.local?.set?.({ autoplayActive: false });
   // console.log('❌ [BeatHub] User manually stopped the autoplay');
-};
+}
 
-const getCurrentPlayingName = () => {
+function getCurrentPlayingName() {
   // logged in case
   let element = document.querySelector('.cell--track-details--filename');
   if (element) return element.textContent.trim();
 
   // logged out case
   return document.querySelector('.track-details--filename')?.textContent.trim();
-};
+}
 
-const getNextBtn = () => {
+function getNextBtn() {
   // logged in case
   const element = document.querySelector('button.next');
   if (element) return element;
@@ -182,10 +183,11 @@ const getNextBtn = () => {
   // Logged out case
   const iconUse = document.querySelector('use[href="#icon-arrow-right"]');
   if (iconUse) return iconUse.closest('a');
-};
+}
 
-const getSkipUntilFound = (rows, currentPlayingName) =>
-  Array.from(rows).some(
+function getSkipUntilFound(rows, currentPlayingName) {
+  return Array.from(rows).some(
     (row) =>
       row.querySelector('.filename')?.textContent.trim() === currentPlayingName
   );
+}
