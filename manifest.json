@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "AutoCrate by BeatHub",
-  "version": "1.0.1",
-  "description": "Auto-play Splice samples — crate-dig while you do anything else.",
+  "version": "1.1.0",
+  "description": "Auto-play Splice samples. Crate-dig while you do anything else.",
   "icons": {
     "16": "icon16.png",
     "32": "icon32.png",
@@ -17,7 +17,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://splice.com/sounds*"],
+      "matches": ["https://splice.com/sounds**"],
       "js": ["splice.js"],
       "run_at": "document_idle"
     }

@@ -4,6 +4,13 @@
   padding: 0;
 }
 
+body {
+  font-family: system-ui, sans-serif;
+  font-size: 75%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .bg-gradient {
   /* moonlit asteroid */
   background: #0F2027; /* fallback for old browsers */
@@ -24,8 +31,8 @@
 }
 
 .buttons {
-  margin: 0 50px;
-  padding: 20px 0 20px 0;
+  margin: 0 54px;
+  padding: 16px 0 12px 0;
 }
 
 button {
@@ -49,6 +56,12 @@ button:hover {
 
 button:active, button:focus {
   transform: scale(0.95, 0.95);
+}
+
+.warning {
+  font-size: 9px;
+  color: #9ca3af;
+  text-align: center;
 }
 
 .credits {
