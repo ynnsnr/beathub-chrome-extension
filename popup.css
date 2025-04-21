@@ -22,6 +22,7 @@ body {
   align-items: end;
   color: #d1d5db;
   display: flex;
+  font-size: 13px;
   gap: 4px;
   padding: 8px;
 }
@@ -31,7 +32,7 @@ body {
 }
 
 .buttons {
-  margin: 0 54px;
+  margin: 0 56px;
   padding: 16px 0 12px 0;
 }
 
@@ -70,14 +71,40 @@ button:active, button:focus {
   text-align: right;
 }
 
+.footer {
+  align-items: end;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 4px;
+  margin-top: 1px;
+}
+
+.footer div {
+  display: flex;
+}
+
+.footer svg {
+  color: #9ca3af;
+  cursor: pointer;
+  height: 18px;
+  margin-bottom: 2px;
+  transition: 0.2s all ease-out;
+  width: 18px;
+}
+
+.footer svg:hover {
+  color: #ffffff;
+  transition: 0.2s all ease-out;
+}
+
 .credits a {
   color: #d1d5db;
+  margin-left: 2px;
   text-decoration: none;
   transition: 0.2s all ease-out;
 }
 
 .credits a:hover {
   color:#ffffff;
-  text-decoration: underline;
   transition: 0.2s all ease-out;
 }

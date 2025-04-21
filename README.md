@@ -1,6 +1,6 @@
 # AutoCrate by [BeatHub](https://www.beathub.co)
 
-AutoCrate is a Chrome Extension that lets you passively browse [Splice](https://splice.com/sounds) samples. It automatically plays each sample, flips through pages, and stops when all tracks are done. Perfect for multitasking while discovering new sounds.
+AutoCrate is a Chrome / Firefox Extension that lets you passively browse [Splice](https://splice.com/sounds/search/samples) and [Landr](https://samples.landr.com/browse) samples. It automatically plays each sample, flips through pages, and stops when all tracks are done. Perfect for multitasking while discovering new sounds.
 
 ## Installation
 

@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "AutoCrate by BeatHub",
-  "version": "1.1.0",
-  "description": "Auto-play Splice samples. Crate-dig while you do anything else.",
+  "version": "1.2.1",
+  "description": "Auto-play Splice and LANDR samples. Crate-dig while you do anything else.",
   "icons": {
     "16": "icon16.png",
     "32": "icon32.png",
@@ -10,7 +10,7 @@
     "128": "icon128.png"
   },
   "permissions": ["storage"],
-  "host_permissions": ["https://splice.com/*"],
+  "host_permissions": ["https://splice.com/*", "https://samples.landr.com/*"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": "icon.png"
@@ -20,6 +20,16 @@
       "matches": ["https://splice.com/sounds**"],
       "js": ["splice.js"],
       "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://samples.landr.com/**"],
+      "js": ["landr.js"],
+      "run_at": "document_idle"
     }
-  ]
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "contact@beathub.co"
+    }
+  }
 }

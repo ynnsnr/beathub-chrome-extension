@@ -47,7 +47,7 @@ async function onUrlChange(event) {
   }
 }
 
-navigation.addEventListener('navigate', onUrlChange);
+if (navigation) navigation.addEventListener('navigate', onUrlChange);
 
 async function stopAutoPlay() {
   window.userStopped = true;
@@ -75,7 +75,7 @@ async function stopAutoPlay() {
 }
 
 async function runAutoPlay() {
-  console.log('▶️ [BeatHub] AutoPlay Started');
+  console.log('▶️ [BeatHub] AutoPlay started');
   window.userStopped = false; // reset on each run
   let hasNextPage = true;
   let skipUntilFound = false;
@@ -132,7 +132,7 @@ async function runAutoPlay() {
     if (nextBtn && !nextBtn.disabled) {
       console.log('➡️ [BeatHub] Going to next page...');
       nextBtn.click();
-      await new Promise((res) => setTimeout(res, 3000));
+      await new Promise((res) => setTimeout(res, 4000));
     } else {
       console.log('✅ [BeatHub] No next page.');
       hasNextPage = false;
@@ -151,8 +151,15 @@ async function waitForIconChange(container, targetHref, timeout) {
   const start = Date.now();
 
   while (true) {
-    const icon = container.querySelector('use');
-    const currentHref = icon?.getAttribute('xlink:href');
+    if (window.userStopped) return false;
+
+    const icon = container.querySelector('.play-controls')
+      ? container.querySelector('.play-controls').querySelector('use') // logged out case
+      : container.querySelector('use');
+
+    const currentHref =
+      icon?.getAttribute('xlink:href') || icon?.getAttribute('href'); // logged out case
+
     if (currentHref === targetHref) return true;
 
     if (Date.now() - start > timeout) return false;
@@ -163,7 +170,7 @@ async function waitForIconChange(container, targetHref, timeout) {
 function handleStop() {
   window.userStopped = true;
   chrome?.storage?.local?.set?.({ autoplayActive: false });
-  // console.log('❌ [BeatHub] User manually stopped the autoplay');
+  console.log('❌ [BeatHub] User manually stopped the autoplay');
 }
 
 function getCurrentPlayingName() {
